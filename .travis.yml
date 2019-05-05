@@ -1,12 +1,14 @@
 env:
   global:
-    - CONAN_TOTAL_PAGES=8
-    - CONAN_DOCKER_32_IMAGES=True
+    - CONAN_TOTAL_PAGES: 4
+    - CONAN_DOCKER_32_IMAGES: True
     - CONAN_REFERENCE: "qt/5.12.3"
     - CONAN_USERNAME: "appimage-conan-community"
     - CONAN_LOGIN_USERNAME: "azubieta"
     - CONAN_CHANNEL: "stable"
     - CONAN_UPLOAD: "https://api.bintray.com/conan/appimage-conan-community/public-conan"
+    - CONAN_ARCHS: "x86_64"
+    - CONAN_UPLOAD_DEPENDENCIES: "all"
 
 linux: &linux
   os: linux
@@ -28,14 +30,6 @@ matrix:
       env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_CURRENT_PAGE=3
     - <<: *linux
       env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_CURRENT_PAGE=4
-    - <<: *linux
-      env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_CURRENT_PAGE=5
-    - <<: *linux
-      env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_CURRENT_PAGE=6
-    - <<: *linux
-      env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_CURRENT_PAGE=7
-    - <<: *linux
-      env: CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_CURRENT_PAGE=8
 install:
   - chmod +x .ci/install.sh
   - ./.ci/install.sh
