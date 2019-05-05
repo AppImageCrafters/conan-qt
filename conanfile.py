@@ -92,7 +92,7 @@ class QtConan(ConanFile):
         "opengl": "desktop",
         "openssl": True,
         "with_pcre2": True,
-        "with_glib": True,
+        "with_glib": False,
         # "with_libiconv": True,
         "with_doubleconversion": True,
         "with_freetype": True,
