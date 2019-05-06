@@ -92,7 +92,7 @@ class QtConan(ConanFile):
         "opengl": "desktop",
         "openssl": True,
         "with_pcre2": True,
-        "with_glib": False,
+        "with_glib": True,
         # "with_libiconv": True,
         "with_doubleconversion": True,
         "with_freetype": True,
@@ -209,7 +209,7 @@ class QtConan(ConanFile):
             self.requires("pcre2/10.32@bincrafters/stable")
 
         if self.options.with_glib:
-            self.requires("glib/2.56.1@bincrafters/stable")
+            self.requires("glib/2.19.10@appimage-conan-community/stable", "override")
             self.options["glib"].shared = True
         # if self.options.with_libiconv:
         #     self.requires("libiconv/1.15@bincrafters/stable")
@@ -387,7 +387,7 @@ class QtConan(ConanFile):
         elif self.settings.build_type == "MinSizeRel":
             args.append("-release")
             args.append("-optimize-size")
-            
+
         for module in QtConan._submodules:
             if module != 'qtbase' and not getattr(self.options, module) \
                     and os.path.isdir(os.path.join(self.source_folder, 'qt5', QtConan._submodules[module]['path'])):
@@ -423,12 +423,12 @@ class QtConan(ConanFile):
         args.append("--sql-odbc=" + ("yes" if self.options.with_odbc else "no"))
 
         for opt, conf_arg in [
-                              ("with_doubleconversion", "doubleconversion"),
-                              ("with_freetype", "freetype"),
-                              ("with_harfbuzz", "harfbuzz"),
-                              ("with_libjpeg", "libjpeg"),
-                              ("with_libpng", "libpng"),
-                              ("with_sqlite3", "sqlite")]:
+            ("with_doubleconversion", "doubleconversion"),
+            ("with_freetype", "freetype"),
+            ("with_harfbuzz", "harfbuzz"),
+            ("with_libjpeg", "libjpeg"),
+            ("with_libpng", "libpng"),
+            ("with_sqlite3", "sqlite")]:
             if getattr(self.options, opt):
                 args += ["-system-" + conf_arg]
             else:
@@ -468,10 +468,12 @@ class QtConan(ConanFile):
                         libs += ["-L" + lpath for lpath in self.deps_cpp_info[dep].lib_paths]
                         libs += _gather_libs(dep)
                     return libs
+
                 args.append("\"%s_LIBS=%s\"" % (var, " ".join(_gather_libs(package))))
 
         if 'mysql-connector-c' in self.deps_cpp_info.deps:
-            args.append("-mysql_config " + os.path.join(self.deps_cpp_info['mysql-connector-c'].rootpath, "bin", "mysql_config"))
+            args.append("-mysql_config " + os.path.join(self.deps_cpp_info['mysql-connector-c'].rootpath, "bin",
+                                                        "mysql_config"))
         if self.settings.os == "Linux":
             if self.options.GUI:
                 args.append("-qt-xcb")
@@ -495,8 +497,8 @@ class QtConan(ConanFile):
         else:
             xplatform_val = self._xplatform()
             if xplatform_val:
-                if (not tools.cross_building(self.settings)) or\
-                        (self.settings.os_build == self.settings.os and\
+                if (not tools.cross_building(self.settings)) or \
+                        (self.settings.os_build == self.settings.os and \
                          self.settings.arch_build == "x86_64" and self.settings.arch == "x86"):
                     args += ["-platform %s" % xplatform_val]
                 else:
