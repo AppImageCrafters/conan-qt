@@ -209,7 +209,7 @@ class QtConan(ConanFile):
             self.requires("pcre2/10.32@bincrafters/stable")
 
         if self.options.with_glib:
-            self.requires("glib/2.19.10@appimage-conan-community/stable", "override")
+            self.requires("glib/2.40.0@appimage-conan-community/stable", "override")
             self.options["glib"].shared = True
         # if self.options.with_libiconv:
         #     self.requires("libiconv/1.15@bincrafters/stable")
