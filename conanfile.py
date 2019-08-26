@@ -116,7 +116,7 @@ class QtConan(ConanFile):
         "config": None,
     }, **{module: False for module in _submodules if module != 'qtbase'}
     )
-    requires = "zlib/1.2.11@conan/stable"
+    requires = "zlib/1.2.11@conan/stable", "bzip2/1.0.8@conan/stable"
     short_paths = True
 
     def _system_package_architecture(self):
