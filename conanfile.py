@@ -568,4 +568,5 @@ class QtConan(ConanFile):
 
     def package_info(self):
         self.cpp_info.builddirs = [os.path.join("lib", "cmake")]
-        self.env_info.path.append(os.path.join("bin"))
+        self.env_info.path.append("bin")
+        self.env_info.CMAKE_PREFIX_PATH.append(os.path.join(self.package_folder, "lib", "cmake"))
