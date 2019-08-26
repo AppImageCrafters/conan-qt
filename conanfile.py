@@ -202,6 +202,8 @@ class QtConan(ConanFile):
                 _enablemodule(module)
 
     def requirements(self):
+        self.options["zlib"].shared = True
+
         if self.options.openssl:
             self.requires("OpenSSL/1.1.1a@conan/stable")
             self.options["OpenSSL"].no_zlib = False
