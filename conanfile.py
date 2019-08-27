@@ -76,6 +76,7 @@ class QtConan(ConanFile):
         "with_sdl2": [True, False],
         "with_libalsa": [True, False],
         "with_openal": [True, False],
+        "with_fontconfig": [True, False],
 
         "GUI": [True, False],
         "widgets": [True, False],
@@ -107,6 +108,7 @@ class QtConan(ConanFile):
         "with_sdl2": True,
         "with_libalsa": True,
         "with_openal": True,
+        "with_fontconfig": True,
 
         "GUI": True,
         "widgets": True,
@@ -143,7 +145,7 @@ class QtConan(ConanFile):
         if self.options.GUI:
             pack_names = []
             if tools.os_info.with_apt:
-                pack_names = ["libxcb1-dev", "libx11-dev", "libc6-dev"]
+                pack_names = ["libxcb1-dev", "libx11-dev", "libc6-dev", "libfontconfig1-dev"]
             elif tools.os_info.is_linux and not tools.os_info.with_pacman:
                 pack_names = ["libxcb-devel", "libX11-devel", "glibc-devel"]
 
@@ -394,6 +396,12 @@ class QtConan(ConanFile):
             if module != 'qtbase' and not getattr(self.options, module) \
                     and os.path.isdir(os.path.join(self.source_folder, 'qt5', QtConan._submodules[module]['path'])):
                 args.append("-skip " + module)
+
+        # fontconfig
+        if self.options.with_fontconfig:
+            args += ["-fontconfig"]
+        else:
+            args += ["-no-fontconfig"]
 
         # openGL
         if self.options.opengl == "no":
